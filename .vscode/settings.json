@@ -1,0 +1,21 @@
+{
+  "explorer.sortOrder": "type",
+  "explorer.fileNesting.enabled": true,
+  "explorer.fileNesting.patterns": {
+    "index.ts": "*.ts,*.tsx",
+    "index.js": "*.js,*.jsx",
+    "App.tsx": "App.css,App.test.tsx",
+    "vite.config.ts": "vite.config.*.ts",
+    "package.json": "package-lock.json,yarn.lock,pnpm-lock.yaml,.npmrc",
+    "tailwind.config.js": "tailwind.config.*.js,postcss.config.js",
+    "tsconfig.json": "tsconfig.*.json"
+  },
+  "explorer.sortOrderLexicographicOptions": "upper",
+  "workbench.tree.renderIndentGuides": "always",
+  "explorer.decorations.badges": true,
+  "explorer.decorations.colors": true,
+  "explorer.compactFolders": false,
+  "editor.minimap.enabled": false,
+  "workbench.tree.indent": 20,
+  "breadcrumbs.enabled": true
+}
