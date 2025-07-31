@@ -3,6 +3,7 @@ import path from "path";
 import axios from "axios";
 import dotenv from "dotenv";
 import admin from "firebase-admin";
+import mock from "./examples/response.example.json";
 import express, { Request, Response } from "express";
 import { authenticateToken, AuthenticatedRequest } from "./middlewares/auth";
 
@@ -60,6 +61,14 @@ app.post(
 
       if (!code) {
         return res.status(400).json({ error: "Code is required" });
+      }
+
+      if (process.env.ENVIRONMENT === "dev") {
+        console.log("Using mock data");
+
+        await new Promise((resolve) => setTimeout(resolve, 25));
+
+        return res.status(200).json(mock);
       }
 
       console.log(
