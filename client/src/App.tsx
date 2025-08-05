@@ -1,21 +1,23 @@
+import {
+  Sidebar,
+  SidebarItem,
+  SidebarHeader,
+  SidebarFooter,
+  SidebarContent,
+} from "./components";
 import useSWR from "swr";
-import axios from "axios";
 import { useState } from "react";
-import { Header, HeaderTitle, HeaderContent, HeaderFooter } from "./components";
-
-const fetcher = async (url: string, code: string) => {
-  const response = await axios.post(url, { code });
-  return response.data;
-};
+import { usePage } from "./hooks";
+import { fetcher } from "./services";
+import { pagesConfig } from "./pages";
+import type { Page } from "./types";
 
 export const App = () => {
-  const [shouldFetch, setShouldFetch] = useState<boolean>(false);
+  const { currentPage, navigate } = usePage();
   const [trackingCode, setTrackingCode] = useState<string>("AC887698372BR");
 
   const { data, error, isLoading } = useSWR(
-    shouldFetch && trackingCode
-      ? ["http://localhost:3001/api/track", trackingCode]
-      : null,
+    trackingCode ? ["http://localhost:3001/api/track", trackingCode] : null,
     ([url, code]) => fetcher(url, code),
     {
       revalidateOnFocus: false,
@@ -23,74 +25,27 @@ export const App = () => {
     }
   );
 
-  const handleFind = () => {
-    if (trackingCode.trim()) {
-      setShouldFetch(true);
-    }
-  };
+  const CurrentPageComponent = pagesConfig[currentPage].component;
 
   return (
-    <div className="w-screen h-screen flex flex-col overflow-hidden">
-      <Header
-        variant="primary"
-        size="lg"
-        className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4"
-      >
-        <div className="flex items-center gap-3">
-          <img src="/images/logo.png" alt="PackFinder" className="w-8 h-8" />
-          <div className="flex flex-col">
-            <HeaderTitle>PackFinder</HeaderTitle>
-            <span className="text-xs text-gray-500">
-              Package tracking and notification
-            </span>
-          </div>
-        </div>
+    <div className="w-screen h-screen flex flex-row overflow-hidden bg-neutral-100 text-neutral-950 dark:bg-neutral-950 dark:text-neutral-100">
+      <Sidebar>
+        <SidebarHeader>PackFinder.io</SidebarHeader>
+        <SidebarContent>
+          {Object.entries(pagesConfig).map(([pageKey, config]) => (
+            <SidebarItem
+              key={pageKey}
+              onClick={() => navigate(pageKey as Page)}
+            >
+              {config.icon} {config.label}
+            </SidebarItem>
+          ))}
+        </SidebarContent>
+        <SidebarFooter>Versão 1.0.0</SidebarFooter>
+      </Sidebar>
 
-        <HeaderContent className="flex-1 justify-center">
-          <nav>
-            <ul className="flex gap-6">
-              <li>
-                <a
-                  href="#"
-                  className="text-gray-600 hover:text-blue-600 transition-colors"
-                >
-                  Dashboard
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-gray-600 hover:text-blue-600 transition-colors"
-                >
-                  Histórico
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-gray-600 hover:text-blue-600 transition-colors"
-                >
-                  Notificações
-                </a>
-              </li>
-            </ul>
-          </nav>
-        </HeaderContent>
-
-        <HeaderFooter>
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white text-sm font-medium">
-              U
-            </div>
-            <span className="text-gray-700">User</span>
-          </div>
-        </HeaderFooter>
-      </Header>
-
-      <main className="flex-1 p-6">
-        <pre className="bg-gray-100 p-4 rounded-lg overflow-auto">
-          {data && JSON.stringify(data, null, 2)}
-        </pre>
+      <main className="flex-1 overflow-y-auto">
+        <CurrentPageComponent />
       </main>
     </div>
   );

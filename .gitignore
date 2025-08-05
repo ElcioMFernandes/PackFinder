@@ -32,3 +32,5 @@ logs/
 
 # Examples
 examples/
+*storybook.log
+storybook-static
