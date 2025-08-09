@@ -1,19 +1,16 @@
 import "./index.css";
-import { Provider } from "jotai";
-import { Loader } from "./components";
+import { App } from "./App";
+import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { StrictMode, Suspense, lazy } from "react";
-
-const App = lazy(() =>
-  import("./App.tsx").then((module) => ({ default: module.App }))
-);
+import { BrowserRouter } from "react-router-dom";
+import { AuthProvider } from "./contexts/AuthContext";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <Provider>
-      <Suspense fallback={<Loader />}>
+    <BrowserRouter>
+      <AuthProvider>
         <App />
-      </Suspense>
-    </Provider>
+      </AuthProvider>
+    </BrowserRouter>
   </StrictMode>
 );
