@@ -1,8 +1,3 @@
+export { card } from "./card";
 export { button } from "./button";
-export {
-  sidebar,
-  sidebarItem,
-  sidebarHeader,
-  sidebarFooter,
-  sidebarContent,
-} from "./sidebar";
+export { sidebar } from "./sidebar";
