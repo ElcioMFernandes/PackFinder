@@ -1,1 +1,1 @@
-export { usePage } from "./usePage";
+export { useBreakpoint } from "./useBreakpoint";
