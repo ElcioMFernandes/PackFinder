@@ -1,1 +1,0 @@
-export { pageAtom } from "./page";
