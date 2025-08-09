@@ -1,9 +1,3 @@
-export { Loader } from "./Loader";
+export { Card } from "./Card";
 export { Button } from "./Button";
-export {
-  Sidebar,
-  SidebarItem,
-  SidebarHeader,
-  SidebarFooter,
-  SidebarContent,
-} from "./Sidebar";
+export { Sidebar } from "./Sidebar";
